@@ -121,7 +121,7 @@ code, kbd, pre, samp, .font-mono { font-family: var(--nb-mono) !important; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(167, 139, 250, 0.5); background-clip: padding-box; }
 
 /* ---------- top navigation (logo + name) ---------- */
-div[style*='backdrop-filter'] {
+div:has(> div > #logo) {
   position: sticky;
   top: 0;
   z-index: 30;
@@ -442,14 +442,15 @@ body:has([class*='LoginFormContainer__Container-sc'])::after {
 }
 
 @media (max-width: 640px) {
-  div[style*='backdrop-filter'] > div {
+  div:has(> #logo) {
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
     height: 3.5rem !important;
   }
-  #logo { flex: 1 1 auto !important; max-width: 50vw; }
-  #logo a { font-size: min(var(--nb-name-size), 1.05rem) !important; padding: 0 !important; }
-  #logo + div { gap: 0.125rem !important; padding-right: 0 !important; }
+  #logo { flex: 1 1 0 !important; min-width: 0; max-width: none; }
+  #logo a { font-size: min(var(--nb-name-size), 1.05rem) !important; }
+  #logo + div { flex: none; gap: 0 !important; padding-right: 0 !important; }
+  #logo + div > * { padding-left: 0.5rem !important; padding-right: 0.5rem !important; min-width: 38px; justify-content: center; }
 }
 
 @media (pointer: coarse) {
@@ -466,7 +467,7 @@ body:has([class*='LoginFormContainer__Container-sc'])::after {
   [class*='ContentBox___StyledDiv-sc'],
   [class*='GreyRowBox'],
   [class*='LoginFormContainer__Shell-sc'] { background: #181030 !important; }
-  div[style*='backdrop-filter'] { background: #120b24 !important; }
+  div:has(> div > #logo) { background: #120b24 !important; }
 }
 @media (prefers-reduced-transparency: reduce) {
   [class*='TitledGreyBox___StyledDiv-sc'],

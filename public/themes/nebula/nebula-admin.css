@@ -78,6 +78,10 @@ body { font-family: var(--nb-font) !important; }
   border: 1px solid var(--nb-a-rule) !important;
 }
 
+/* keep content and sidebar below the 56px fixed header */
+.fixed .content-wrapper, .fixed .right-side { padding-top: 56px !important; }
+.fixed .main-sidebar { padding-top: 56px !important; }
+
 /* ---------- sidebar ---------- */
 .skin-blue .wrapper,
 .skin-blue .main-sidebar,
@@ -336,6 +340,31 @@ a:hover { color: var(--nb-violet-300); }
 
 /* ---------- mobile ---------- */
 @media (max-width: 767px) {
+  /* single 56px header row: [logo / name ..........][menu  icons] */
+  .main-header { display: flex !important; align-items: stretch; height: 56px; max-height: 56px; }
+  .skin-blue .main-header .logo {
+    float: none !important;
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0;
+    padding: 0 14px !important;
+    border-right: 0 !important;
+  }
+  .main-header .navbar {
+    float: none !important;
+    flex: none;
+    display: flex;
+    align-items: stretch;
+    width: auto !important;
+    margin: 0 !important;
+  }
+  .main-header .navbar .sidebar-toggle { float: none !important; padding: 18px 14px !important; }
+  .main-header .navbar-custom-menu { float: none !important; }
+  .main-header .navbar .nav > li > a { padding-left: 12px !important; padding-right: 12px !important; }
+  .navbar-nav > .user-menu > a { padding-left: 12px !important; }
+  .navbar-nav { margin: 0 !important; display: flex; flex-direction: row; }
+  .navbar-nav > li { float: none !important; }
+  .skin-blue .main-sidebar { background: rgba(14, 9, 28, 0.97) !important; }
   input, textarea, select, .form-control { font-size: 16px !important; }
   .content-header { padding: 14px 14px 6px !important; }
   .content-header > h1 { font-size: 20px !important; }
@@ -343,9 +372,6 @@ a:hover { color: var(--nb-violet-300); }
   .content { padding: 6px 12px 22px !important; }
   .box-body { padding: 14px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .box-header { padding: 14px 14px 10px !important; }
-  .skin-blue .main-header .logo { width: auto !important; max-width: 62vw; float: none; padding: 0 14px !important; }
-  .main-header .navbar { margin-left: 0 !important; }
-  .skin-blue .main-sidebar { padding-top: 0 !important; }
   .table-responsive { border: 0 !important; }
   .btn { min-height: 40px; }
   .modal-dialog { margin: 12px !important; }
