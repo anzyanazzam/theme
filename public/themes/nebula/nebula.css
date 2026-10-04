@@ -1,0 +1,479 @@
+/* ============================================================
+   NEBULA - dark purple glass theme for the Pterodactyl client
+   ~70% deep dark / ~30% violet glow, frosted glass surfaces.
+
+   Colours inside the panel bundle itself are remapped to violet
+   by tools/recolor.py. This file adds the page background, glass
+   surfaces, auth pages, logo slot and mobile polish.
+   NOTE: the --elipso-* names are kept on purpose - the prebuilt
+   bundle reads them.
+   ============================================================ */
+
+:root {
+  /* palette */
+  --nb-bg: #09060f;
+  --nb-bg-2: #0e0a1a;
+  --nb-violet-300: #c4b5fd;
+  --nb-violet-400: #a78bfa;
+  --nb-violet-500: #8b5cf6;
+  --nb-violet-600: #7c3aed;
+  --nb-violet-700: #6d28d9;
+  --nb-glass: rgba(255, 255, 255, 0.05);
+  --nb-glass-strong: rgba(255, 255, 255, 0.085);
+  --nb-glass-border: rgba(255, 255, 255, 0.1);
+  --nb-glass-border-strong: rgba(255, 255, 255, 0.18);
+  --nb-blur: 18px;
+  --nb-radius: 16px;
+  --nb-radius-sm: 12px;
+  --nb-font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  --nb-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* logo slot (overridden per-site by the nebula/head partial) */
+  --nb-logo-size: 0px;
+  --nb-logo-aspect: 1;
+  --nb-logo-gap: 0px;
+  --nb-logo-gap-y: 0px;
+  --nb-name-size: 1.15rem;
+  --nb-login-logo-h: 0px;
+  --nb-login-image: none;
+  --nb-login-overlay: 0;
+  --nb-login-blur: 0px;
+
+  /* names read by the prebuilt bundle */
+  --elipso-canvas: #09060f;
+  --elipso-canvas-soft: #0f0a1c;
+  --elipso-canvas-soft-2: #1c1633;
+  --elipso-canvas-raised: #150f28;
+  --elipso-ink: #f7f5ff;
+  --elipso-body: #b0a8cf;
+  --elipso-muted: #7a70a3;
+  --elipso-hairline: rgba(255, 255, 255, 0.09);
+  --elipso-hairline-strong: rgba(255, 255, 255, 0.16);
+  --elipso-primary: #8b5cf6;
+  --elipso-on-primary: #ffffff;
+  --elipso-link: #a78bfa;
+  --elipso-link-deep: #8b5cf6;
+  --elipso-cyan: #34d399;
+  --elipso-success: #34d399;
+  --elipso-error: #f87171;
+  --elipso-error-soft: rgb(248 113 113 / 0.12);
+  --elipso-warning: #fbbf24;
+  --elipso-warning-soft: rgb(251 191 36 / 0.12);
+  --elipso-shadow-card: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 8px 24px -8px rgba(0, 0, 0, 0.55);
+  --elipso-shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 24px 60px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --font-sans: var(--nb-font);
+  --font-mono: var(--nb-mono);
+  --space-xs: 0.5rem;
+  --radius-full: 9999px;
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  min-height: 100%;
+  color: var(--elipso-ink);
+  font-family: var(--nb-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--nb-bg);
+  background-image:
+    radial-gradient(62rem 40rem at 10% -10%, rgba(124, 58, 237, 0.34), transparent 60%),
+    radial-gradient(50rem 36rem at 105% 6%, rgba(168, 85, 247, 0.2), transparent 60%),
+    radial-gradient(56rem 42rem at 50% 118%, rgba(91, 33, 182, 0.3), transparent 62%),
+    linear-gradient(180deg, #0a0714 0%, #09060f 100%);
+  background-attachment: fixed;
+}
+
+body,
+body.elipso-canvas,
+body.elipso-mesh {
+  margin: 0;
+  min-height: 100vh;
+  background: transparent !important;
+  color: var(--elipso-body) !important;
+  font-family: var(--nb-font) !important;
+  letter-spacing: -0.003em !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--elipso-ink);
+  font-family: var(--nb-font) !important;
+  font-weight: 650;
+  letter-spacing: -0.02em !important;
+}
+
+a { text-decoration: none; }
+::selection { background: rgba(139, 92, 246, 0.55); color: #fff; }
+
+code, kbd, pre, samp, .font-mono { font-family: var(--nb-mono) !important; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; background: transparent; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 250, 0.28);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(167, 139, 250, 0.5); background-clip: padding-box; }
+
+/* ---------- top navigation (logo + name) ---------- */
+div[style*='backdrop-filter'] {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: linear-gradient(180deg, rgba(24, 14, 46, 0.72), rgba(14, 9, 28, 0.56)) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(180%) !important;
+  backdrop-filter: blur(22px) saturate(180%) !important;
+  border-bottom: 1px solid var(--nb-glass-border) !important;
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+}
+
+#logo { min-width: 0; }
+
+#logo a {
+  display: inline-block !important;
+  max-width: 100%;
+  padding: 0 0.25rem !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  font-size: var(--nb-name-size) !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--elipso-ink) !important;
+}
+
+#logo a::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(var(--nb-logo-size) * var(--nb-logo-aspect));
+  height: var(--nb-logo-size);
+  margin-right: var(--nb-logo-gap);
+  background: var(--nb-logo, none) center / contain no-repeat;
+}
+
+#logo + div > a,
+#logo + div > button,
+#logo + div > .navigation-link {
+  border-radius: 999px !important;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+#logo + div > a:hover,
+#logo + div > button:hover,
+#logo + div > a.active {
+  background: var(--nb-glass-strong) !important;
+  border-color: var(--nb-glass-border) !important;
+  color: var(--elipso-ink) !important;
+}
+
+/* ---------- glass surfaces ---------- */
+[class*='TitledGreyBox___StyledDiv-sc'],
+[class*='ContentBox___StyledDiv-sc'],
+[class*='GreyRowBox'],
+[class*='ScreenBlock___StyledDiv-sc'] {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035)) !important;
+  border: 1px solid var(--nb-glass-border) !important;
+  border-radius: var(--nb-radius) !important;
+  box-shadow: var(--elipso-shadow-card) !important;
+  -webkit-backdrop-filter: blur(var(--nb-blur)) saturate(150%);
+  backdrop-filter: blur(var(--nb-blur)) saturate(150%);
+}
+
+a[class*='GreyRowBox']:hover,
+div[class*='GreyRowBox']:hover {
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.16), rgba(255, 255, 255, 0.045)) !important;
+  border-color: rgba(167, 139, 250, 0.4) !important;
+}
+
+[class*='GreyRowBox'] .icon {
+  background: rgba(139, 92, 246, 0.16) !important;
+  border: 1px solid rgba(167, 139, 250, 0.3) !important;
+  color: var(--nb-violet-300) !important;
+}
+
+[class*='DropdownMenu___StyledDiv-sc'],
+[class*='SearchModal___StyledDiv-sc'],
+[class*='Modal___StyledDiv-sc'] {
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+}
+
+[class*='DropdownMenu___StyledDiv-sc'] {
+  background: rgba(20, 13, 38, 0.82) !important;
+  border: 1px solid var(--nb-glass-border) !important;
+  border-radius: var(--nb-radius-sm) !important;
+  box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.75) !important;
+}
+
+[class*='MessageBox___StyledContainer-sc'] {
+  border-radius: var(--nb-radius-sm) !important;
+}
+
+[class*='Pagination___StyledDiv-sc'] { border-radius: var(--nb-radius-sm); }
+
+/* ---------- forms ---------- */
+input:not([type='checkbox']):not([type='radio']):not([type='range']),
+textarea,
+select {
+  font-family: var(--nb-font);
+  border-radius: var(--nb-radius-sm) !important;
+  background-color: rgba(8, 5, 18, 0.5) !important;
+  border: 1px solid var(--nb-glass-border) !important;
+  color: var(--elipso-ink) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+input:not([type='checkbox']):not([type='radio']):hover,
+textarea:hover,
+select:hover { border-color: var(--nb-glass-border-strong) !important; }
+input:not([type='checkbox']):not([type='radio']):not([type='range']):focus,
+textarea:focus,
+select:focus {
+  border-color: var(--nb-violet-400) !important;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.22) !important;
+  outline: none;
+}
+input[type='checkbox']:checked { background-color: var(--nb-violet-500) !important; }
+input::placeholder, textarea::placeholder { color: var(--elipso-muted); }
+
+/* ---------- buttons (css-module classes of the prebuilt bundle) ---------- */
+.style-module_tpzh9TL4 {
+  border-radius: 12px !important;
+  font-weight: 550 !important;
+  letter-spacing: -0.005em;
+  transition: transform 0.12s ease, filter 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+.style-module_tpzh9TL4:active:not(:disabled) { transform: scale(0.985); }
+
+/* primary */
+.style-module_G19Z2bxH:not(.style-module_ou_QoN1U) {
+  background: linear-gradient(180deg, #9d78f9 0%, #7c3aed 100%) !important;
+  border-color: rgba(196, 181, 253, 0.45) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px -8px rgba(124, 58, 237, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.style-module_G19Z2bxH:not(.style-module_ou_QoN1U):hover:not(:disabled) { filter: brightness(1.1); }
+.style-module_G19Z2bxH:not(.style-module_ou_QoN1U):disabled {
+  background: rgba(139, 92, 246, 0.3) !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+  box-shadow: none;
+}
+/* primary, "secondary" (outlined) variant */
+.style-module_G19Z2bxH.style-module_ou_QoN1U {
+  background: var(--nb-glass) !important;
+  border-color: var(--nb-glass-border-strong) !important;
+  color: var(--elipso-ink) !important;
+}
+.style-module_G19Z2bxH.style-module_ou_QoN1U:hover:not(:disabled) { background: var(--nb-glass-strong) !important; }
+/* text / neutral */
+.style-module_ATwWHiM7 {
+  background: var(--nb-glass) !important;
+  border-color: var(--nb-glass-border) !important;
+  color: var(--elipso-ink) !important;
+}
+.style-module_ATwWHiM7:hover:not(:disabled) {
+  background: var(--nb-glass-strong) !important;
+  border-color: var(--nb-glass-border-strong) !important;
+}
+/* focus ring */
+.style-module_tpzh9TL4:focus-visible { box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.35) !important; }
+
+/* ---------- console / terminal / code ---------- */
+.style-module_uC90C8g3 > .style-module_LI1icUp6 {
+  background: rgba(8, 5, 18, 0.72) !important;
+  border: 1px solid var(--nb-glass-border);
+  border-bottom: 0;
+  -webkit-backdrop-filter: blur(var(--nb-blur));
+  backdrop-filter: blur(var(--nb-blur));
+}
+.style-module_uC90C8g3 .style-module_g8HBAuZB {
+  background: rgba(20, 13, 38, 0.85) !important;
+  border: 1px solid var(--nb-glass-border);
+  border-top: 0;
+  font-family: var(--nb-mono);
+}
+.xterm, .xterm-viewport, .xterm-screen { background: transparent !important; }
+.CodeMirror {
+  border-radius: var(--nb-radius-sm);
+  border: 1px solid var(--nb-glass-border);
+}
+pre:not(.CodeMirror-line):not(.CodeMirror-placeholder) {
+  border-radius: var(--nb-radius-sm);
+}
+
+/* ---------- file manager rows ---------- */
+body .style-module_HHpjDvv7 {
+  background: var(--nb-glass) !important;
+  border: 1px solid var(--nb-glass-border) !important;
+  border-radius: var(--nb-radius-sm) !important;
+  margin-bottom: 4px !important;
+}
+body .style-module_HHpjDvv7 > *,
+body .style-module_HHpjDvv7 .style-module_le7taa7N { background: transparent !important; }
+body .style-module_HHpjDvv7:hover:not(:has(input[type='checkbox']:checked)) {
+  background: rgba(139, 92, 246, 0.14) !important;
+  border-color: rgba(167, 139, 250, 0.35) !important;
+}
+body .style-module_HHpjDvv7:has(input[type='checkbox']:checked) {
+  background: rgba(139, 92, 246, 0.22) !important;
+  border-color: rgba(167, 139, 250, 0.55) !important;
+}
+
+/* ---------- auth pages (login / reset / 2FA) ----------
+   Targets the class names of the prebuilt bundle (LoginFormContainer). */
+div:has(> [class*='LoginFormContainer__Container-sc']) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem !important;
+}
+[class*='LoginFormContainer__Container-sc'] { width: 100%; max-width: 34rem; margin: 0 auto; }
+
+/* custom login background: image layer + tinted overlay (only on auth pages) */
+body:has([class*='LoginFormContainer__Container-sc'])::before {
+  content: '';
+  position: fixed;
+  inset: -24px;
+  z-index: -2;
+  background: var(--nb-login-image) center / cover no-repeat;
+  filter: blur(var(--nb-login-blur));
+  pointer-events: none;
+}
+body:has([class*='LoginFormContainer__Container-sc'])::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 36rem at 12% -10%, rgba(124, 58, 237, calc(var(--nb-login-overlay) * 0.6)), transparent 62%),
+    rgba(9, 6, 15, var(--nb-login-overlay));
+}
+
+[class*='LoginFormContainer___StyledH-sc'] {
+  margin: 0 auto 1.25rem !important;
+  text-align: center !important;
+  font-size: clamp(1.6rem, 5vw, 2.1rem) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.035em !important;
+  color: var(--elipso-ink) !important;
+}
+[class*='LoginFormContainer___StyledH-sc']::before {
+  content: '';
+  display: block;
+  width: calc(var(--nb-login-logo-h) * var(--nb-logo-aspect));
+  height: var(--nb-login-logo-h);
+  margin: 0 auto var(--nb-logo-gap-y);
+  background: var(--nb-logo, none) center / contain no-repeat;
+  filter: drop-shadow(0 8px 24px rgba(124, 58, 237, 0.45));
+}
+
+/* the glass card */
+[class*='LoginFormContainer__Shell-sc'] {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: clamp(1.4rem, 5vw, 2.4rem) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.045)) !important;
+  border: 1px solid var(--nb-glass-border-strong) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--elipso-shadow-panel) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+}
+
+/* "Pterodactyl Panel" brand label -> panel name from settings */
+[class*='LoginFormContainer__Brand-sc'] { font-size: 0 !important; }
+[class*='LoginFormContainer__Brand-sc']::after {
+  content: var(--nb-panel-name, 'Panel');
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--elipso-body);
+}
+[class*='LoginFormContainer__Dot-sc'] {
+  background: linear-gradient(135deg, var(--nb-violet-400), var(--nb-violet-600)) !important;
+  box-shadow: 0 0 0 0.3rem rgba(139, 92, 246, 0.16), 0 0 18px rgba(167, 139, 250, 0.7) !important;
+}
+[class*='LoginFormContainer__Eyebrow-sc'] { color: var(--elipso-muted) !important; letter-spacing: 0.1em !important; }
+
+[class*='LoginFormContainer__Shell-sc'] label {
+  color: var(--elipso-body) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase;
+}
+[class*='LoginFormContainer__Shell-sc'] input {
+  height: 48px !important;
+  padding: 0 1rem !important;
+  border-radius: 14px !important;
+  background-color: rgba(6, 3, 14, 0.55) !important;
+}
+[class*='LoginFormContainer__Shell-sc'] button[type='submit'] {
+  height: 48px !important;
+  width: 100%;
+  border-radius: 14px !important;
+  font-size: 1rem !important;
+  background: linear-gradient(180deg, #a07cfa 0%, #7c3aed 100%) !important;
+  border: 1px solid rgba(196, 181, 253, 0.5) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 30px -10px rgba(124, 58, 237, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: filter 0.15s ease, transform 0.12s ease;
+}
+[class*='LoginFormContainer__Shell-sc'] button[type='submit']:hover { filter: brightness(1.1); }
+[class*='LoginFormContainer__Shell-sc'] button[type='submit']:active { transform: scale(0.985); }
+[class*='LoginFormContainer__Shell-sc'] a { color: var(--elipso-muted) !important; text-transform: none !important; letter-spacing: 0 !important; }
+[class*='LoginFormContainer__Shell-sc'] a:hover { color: var(--nb-violet-300) !important; }
+[class*='LoginFormContainer___StyledP-sc'] { text-align: center !important; color: var(--elipso-muted) !important; }
+[class*='LoginFormContainer___StyledP-sc'] a { color: var(--elipso-muted) !important; }
+
+/* ---------- mobile ---------- */
+@media (max-width: 768px) {
+  /* 16px stops iOS from zooming the page when an input is focused */
+  input, textarea, select { font-size: 16px !important; }
+  :root { --nb-radius: 14px; --nb-blur: 14px; }
+}
+
+@media (max-width: 640px) {
+  div[style*='backdrop-filter'] > div {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    height: 3.5rem !important;
+  }
+  #logo { flex: 1 1 auto !important; max-width: 50vw; }
+  #logo a { font-size: min(var(--nb-name-size), 1.05rem) !important; padding: 0 !important; }
+  #logo + div { gap: 0.125rem !important; padding-right: 0 !important; }
+}
+
+@media (pointer: coarse) {
+  #logo + div > a, #logo + div > button, #logo + div > .navigation-link {
+    min-width: 40px;
+    height: 40px !important;
+    justify-content: center;
+  }
+}
+
+/* no blur support / user asked for less transparency -> solid surfaces */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [class*='TitledGreyBox___StyledDiv-sc'],
+  [class*='ContentBox___StyledDiv-sc'],
+  [class*='GreyRowBox'],
+  [class*='LoginFormContainer__Shell-sc'] { background: #181030 !important; }
+  div[style*='backdrop-filter'] { background: #120b24 !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  [class*='TitledGreyBox___StyledDiv-sc'],
+  [class*='ContentBox___StyledDiv-sc'],
+  [class*='GreyRowBox'],
+  [class*='LoginFormContainer__Shell-sc'] { background: #181030 !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

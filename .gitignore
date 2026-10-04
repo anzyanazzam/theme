@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+__pycache__/
+public/themes/nebula/uploads/*
+!public/themes/nebula/uploads/.gitkeep
